@@ -77,19 +77,21 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+            <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-3 text-sm text-muted-foreground">
               <span className="font-mono text-xs uppercase tracking-wider">
                 Un solo flusso per
               </span>
-              {channelChips.map(({ icon: Icon, label }) => (
-                <span
-                  key={label}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-ink"
-                >
-                  <Icon className="size-3.5" />
-                  {label}
-                </span>
-              ))}
+              <div className="flex items-center gap-2">
+                {channelChips.map(({ icon: Icon, label }) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-ink"
+                  >
+                    <Icon className="size-3.5" />
+                    {label}
+                  </span>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
