@@ -1,26 +1,167 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------------------------------------------ *
+ *  Sintonia — design tokens
+ *  Palette: warm paper ground · ink text · persimmon accent ·
+ *  deep ink-teal for dark surfaces · teal for "resolved/trust"
+ * ------------------------------------------------------------------ */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  /* brand tokens */
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-persimmon: var(--persimmon);
+  --color-persimmon-soft: var(--persimmon-soft);
+  --color-teal: var(--teal);
+  --color-teal-ink: var(--teal-ink);
+  --color-teal-soft: var(--teal-soft);
+  --color-sand: var(--sand);
+
+  /* shadcn semantic tokens */
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.55);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.35);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.4);
+
+  --shadow-lift: 0 1px 2px rgb(28 24 34 / 0.04), 0 12px 32px -12px rgb(28 24 34 / 0.12);
+  --shadow-float: 0 2px 4px rgb(28 24 34 / 0.05), 0 24px 60px -20px rgb(28 24 34 / 0.18);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.875rem;
+
+  /* raw brand palette */
+  --paper: #fbf8f3;
+  --ink: #1c1822;
+  --persimmon: #ed5733;
+  --persimmon-soft: #fbe3da;
+  --teal: #1b7a6b;
+  --teal-ink: #0e2f2c;
+  --teal-soft: #d9ece6;
+  --sand: #f3ece2;
+
+  --background: #fbf8f3;
+  --foreground: #1c1822;
+
+  --card: #ffffff;
+  --card-foreground: #1c1822;
+  --popover: #ffffff;
+  --popover-foreground: #1c1822;
+
+  --primary: #ed5733;
+  --primary-foreground: #fff7f4;
+  --secondary: #f3ece2;
+  --secondary-foreground: #1c1822;
+  --muted: #f1eae0;
+  --muted-foreground: #6e665b;
+  --accent: #fbe3da;
+  --accent-foreground: #8f2e15;
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: #e8ded0;
+  --input: #e8ded0;
+  --ring: #ed5733;
+}
+
+.dark {
+  --background: #0e2f2c;
+  --foreground: #f3efe8;
+
+  --card: #123734;
+  --card-foreground: #f3efe8;
+  --popover: #123734;
+  --popover-foreground: #f3efe8;
+
+  --primary: #ed5733;
+  --primary-foreground: #fff7f4;
+  --secondary: #1a423e;
+  --secondary-foreground: #f3efe8;
+  --muted: #1a423e;
+  --muted-foreground: #9db5af;
+  --accent: #1a423e;
+  --accent-foreground: #f3efe8;
+
+  --teal-soft: #19433f;
+  --sand: #16403c;
+
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: rgb(243 239 232 / 0.12);
+  --input: rgb(243 239 232 / 0.16);
+  --ring: #ed5733;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv01", "cv11";
+  }
+  ::selection {
+    background: var(--persimmon);
+    color: var(--primary-foreground);
+  }
+  /* visible focus */
+  :focus-visible {
+    outline: 2px solid var(--persimmon);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* utility: fine grain texture for dark panels */
+@utility grain {
+  background-image: radial-gradient(
+    rgb(255 255 255 / 0.025) 1px,
+    transparent 1px
+  );
+  background-size: 4px 4px;
 }
